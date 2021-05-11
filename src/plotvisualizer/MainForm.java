@@ -34,6 +34,9 @@ public class MainForm extends javax.swing.JFrame {
     LinkedList<File> selectedFileList = new LinkedList<>();
     DefaultListModel model = new DefaultListModel();
     
+    AnimationWindow aw;
+    Thread threadAnim;
+    
     public MainForm() {
         initComponents();
     }
@@ -188,6 +191,7 @@ public class MainForm extends javax.swing.JFrame {
         animateOpenButton = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         containNoneTextField = new javax.swing.JTextField();
+        cancelAnimationButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -220,9 +224,9 @@ public class MainForm extends javax.swing.JFrame {
         jScrollPane1.setViewportView(mainList);
 
         openButton.setText("Open Desktop");
-        openButton.setMaximumSize(new java.awt.Dimension(125, 32));
-        openButton.setMinimumSize(new java.awt.Dimension(125, 32));
-        openButton.setPreferredSize(new java.awt.Dimension(125, 32));
+        openButton.setMaximumSize(new java.awt.Dimension(150, 32));
+        openButton.setMinimumSize(new java.awt.Dimension(150, 32));
+        openButton.setPreferredSize(new java.awt.Dimension(150, 32));
         openButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openButtonActionPerformed(evt);
@@ -257,9 +261,9 @@ public class MainForm extends javax.swing.JFrame {
 
         javaOpenButton.setText("Open Java");
         javaOpenButton.setActionCommand("Open Image");
-        javaOpenButton.setMaximumSize(new java.awt.Dimension(125, 32));
-        javaOpenButton.setMinimumSize(new java.awt.Dimension(125, 32));
-        javaOpenButton.setPreferredSize(new java.awt.Dimension(125, 32));
+        javaOpenButton.setMaximumSize(new java.awt.Dimension(150, 32));
+        javaOpenButton.setMinimumSize(new java.awt.Dimension(150, 32));
+        javaOpenButton.setPreferredSize(new java.awt.Dimension(150, 32));
         javaOpenButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 javaOpenButtonActionPerformed(evt);
@@ -298,7 +302,7 @@ public class MainForm extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(previewFileNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 3, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(leftButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -322,9 +326,9 @@ public class MainForm extends javax.swing.JFrame {
         );
 
         animateOpenButton.setText("Open Animation");
-        animateOpenButton.setMaximumSize(new java.awt.Dimension(125, 32));
-        animateOpenButton.setMinimumSize(new java.awt.Dimension(125, 32));
-        animateOpenButton.setPreferredSize(new java.awt.Dimension(125, 32));
+        animateOpenButton.setMaximumSize(new java.awt.Dimension(150, 32));
+        animateOpenButton.setMinimumSize(new java.awt.Dimension(150, 32));
+        animateOpenButton.setPreferredSize(new java.awt.Dimension(150, 32));
         animateOpenButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 animateOpenButtonActionPerformed(evt);
@@ -332,6 +336,16 @@ public class MainForm extends javax.swing.JFrame {
         });
 
         jLabel4.setText("Must Not Contain Any Below");
+
+        cancelAnimationButton.setText("Cancel Animation");
+        cancelAnimationButton.setMaximumSize(new java.awt.Dimension(150, 32));
+        cancelAnimationButton.setMinimumSize(new java.awt.Dimension(150, 32));
+        cancelAnimationButton.setPreferredSize(new java.awt.Dimension(150, 32));
+        cancelAnimationButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelAnimationButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -344,36 +358,36 @@ public class MainForm extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel1)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(2, 2, 2)
-                                                .addComponent(jLabel3))
-                                            .addComponent(jLabel2)
-                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                .addComponent(containAnyTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
-                                                .addComponent(containAllTextField, javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(containNoneTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE))
-                                            .addComponent(selectRootDirectoryButton)
-                                            .addComponent(jLabel4))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGap(2, 2, 2)
+                                        .addComponent(jLabel3))
+                                    .addComponent(jLabel2)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(containAnyTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
+                                        .addComponent(containAllTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(containNoneTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE))
+                                    .addComponent(selectRootDirectoryButton)
+                                    .addComponent(jLabel4))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
-                                .addComponent(openButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(javaOpenButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(animateOpenButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(182, 182, 182))))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(javaOpenButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cancelAnimationButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(openButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(animateOpenButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 517, Short.MAX_VALUE))
+                        .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -406,9 +420,12 @@ public class MainForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(openButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(animateOpenButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(javaOpenButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(animateOpenButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(javaOpenButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cancelAnimationButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
             .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -498,8 +515,17 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_mainListValueChanged
 
     private void animateOpenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_animateOpenButtonActionPerformed
-        AnimationWindow aw = new AnimationWindow(selectedFileList, root);
-        aw.setVisible(true);
+        toggleLoading(true);
+        //New thread
+        Runnable runnable = () -> {
+            aw = new AnimationWindow(selectedFileList, root);
+            aw.setVisible(true);
+            toggleLoading(false);
+        };
+        threadAnim = new Thread(runnable);
+        threadAnim.start();
+        
+        
     }//GEN-LAST:event_animateOpenButtonActionPerformed
 
     private void rightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightButtonActionPerformed
@@ -527,8 +553,26 @@ public class MainForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_leftButtonActionPerformed
 
+    private void cancelAnimationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelAnimationButtonActionPerformed
+        System.out.println("Attempted Cancel");
+        try {
+            threadAnim.stop();
+            aw.dispose();
+            
+            
+        } catch(Exception e) {
+            
+        } finally {
+            System.out.println("Done");
+            loadTimer.cancel();
+            loadingLabel.setText("");
+            setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        }
+    }//GEN-LAST:event_cancelAnimationButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton animateOpenButton;
+    private javax.swing.JButton cancelAnimationButton;
     private javax.swing.JTextField containAllTextField;
     private javax.swing.JTextField containAnyTextField;
     private javax.swing.JTextField containNoneTextField;
