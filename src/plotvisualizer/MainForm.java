@@ -56,10 +56,14 @@ public class MainForm extends javax.swing.JFrame {
         //set up the filters
         String[] allFilters = containAllTextField.getText().split(",");
         String[] oneFilters = containAnyTextField.getText().split(",");
+        String[] noneFilters = null;
+        noneFilters = containNoneTextField.getText().split(",");
         //adds all fileList items to selectedFileList given criterion
         for (File file : fileList) {
-            if (Arrays.stream(allFilters).allMatch(file.getAbsolutePath()::contains) &&
-                Arrays.stream(oneFilters).anyMatch(file.getAbsolutePath()::contains)) {
+            if (!(containNoneTextField.getText().isEmpty()) && Arrays.stream(noneFilters).anyMatch(file.getAbsolutePath()::contains)) {
+                //Do nothing
+            } else if (Arrays.stream(allFilters).allMatch(file.getAbsolutePath()::contains) &&
+                    Arrays.stream(oneFilters).anyMatch(file.getAbsolutePath()::contains)){
                 selectedFileList.add(file);
             }
         }
@@ -101,7 +105,7 @@ public class MainForm extends javax.swing.JFrame {
             sii = new SimpleImageInfo(img);
         } catch(Exception e) {
             System.out.println("error recieving image scale info");
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         
         double scale;
@@ -132,7 +136,7 @@ public class MainForm extends javax.swing.JFrame {
             currentImg = img;
             return new ImageIcon(ImageIO.read(img).getScaledInstance((int) (sii.getWidth() * scale), (int) (sii.getHeight() * scale), BufferedImage.SCALE_SMOOTH)); 
         } catch(Exception e) {
-            System.out.println("error creating Image Icon");
+            System.out.println("not an image");
 //            e.printStackTrace();
             return null;
         }
@@ -182,6 +186,8 @@ public class MainForm extends javax.swing.JFrame {
         leftButton = new javax.swing.JButton();
         rightButton = new javax.swing.JButton();
         animateOpenButton = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        containNoneTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -245,7 +251,7 @@ public class MainForm extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(loadingLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(loadingLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -325,39 +331,48 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setText("Must Not Contain Any Below");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel1)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(2, 2, 2)
-                                        .addComponent(jLabel3))
-                                    .addComponent(jLabel2)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(containAnyTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
-                                        .addComponent(containAllTextField, javax.swing.GroupLayout.Alignment.LEADING))
-                                    .addComponent(selectRootDirectoryButton))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel1)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(2, 2, 2)
+                                                .addComponent(jLabel3))
+                                            .addComponent(jLabel2)
+                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addComponent(containAnyTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
+                                                .addComponent(containAllTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(containNoneTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE))
+                                            .addComponent(selectRootDirectoryButton)
+                                            .addComponent(jLabel4))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(openButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(javaOpenButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(animateOpenButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(182, 182, 182))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(openButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(javaOpenButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(animateOpenButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(182, 182, 182)))
+                        .addContainerGap()
+                        .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 517, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -365,6 +380,9 @@ public class MainForm extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(15, 15, 15))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -378,10 +396,13 @@ public class MainForm extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(containAnyTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(searchButton))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(containNoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addComponent(searchButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(openButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -468,36 +489,11 @@ public class MainForm extends javax.swing.JFrame {
         tw.setVisible(true);
     }//GEN-LAST:event_javaOpenButtonActionPerformed
 
-    private void leftButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leftButtonActionPerformed
-        try {
-            if (mainList.getSelectedIndex() <= 0) {
-                mainList.setSelectedIndex(selectedFileList.size() - 1);
-            } else {            
-                mainList.setSelectedIndex(mainList.getSelectedIndex() - 1);
-            } 
-        } catch(Exception e) {
-            System.out.println("not an image");
-        }
-    }//GEN-LAST:event_leftButtonActionPerformed
-
-    private void rightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightButtonActionPerformed
-        //moves up the selected index
-        try {
-            if (mainList.getSelectedIndex() >= selectedFileList.size() - 1) {
-                mainList.setSelectedIndex(0);
-            } else {            
-                mainList.setSelectedIndex(mainList.getSelectedIndex() + 1);
-            } 
-        } catch(Exception e) {
-            System.out.println("not an image");
-        }
-    }//GEN-LAST:event_rightButtonActionPerformed
-
     private void mainListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_mainListValueChanged
         try {
             setView(smartImageScaler(selectedFileList.get(mainList.getSelectedIndex())));
         } catch(Exception e) {
-            System.out.println("not an image");
+            
         }
     }//GEN-LAST:event_mainListValueChanged
 
@@ -506,13 +502,40 @@ public class MainForm extends javax.swing.JFrame {
         aw.setVisible(true);
     }//GEN-LAST:event_animateOpenButtonActionPerformed
 
+    private void rightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightButtonActionPerformed
+        //moves up the selected index
+        try {
+            if (mainList.getSelectedIndex() >= selectedFileList.size() - 1) {
+                mainList.setSelectedIndex(0);
+            } else {
+                mainList.setSelectedIndex(mainList.getSelectedIndex() + 1);
+            }
+        } catch(Exception e) {
+
+        }
+    }//GEN-LAST:event_rightButtonActionPerformed
+
+    private void leftButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leftButtonActionPerformed
+        try {
+            if (mainList.getSelectedIndex() <= 0) {
+                mainList.setSelectedIndex(selectedFileList.size() - 1);
+            } else {
+                mainList.setSelectedIndex(mainList.getSelectedIndex() - 1);
+            }
+        } catch(Exception e) {
+
+        }
+    }//GEN-LAST:event_leftButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton animateOpenButton;
     private javax.swing.JTextField containAllTextField;
     private javax.swing.JTextField containAnyTextField;
+    private javax.swing.JTextField containNoneTextField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

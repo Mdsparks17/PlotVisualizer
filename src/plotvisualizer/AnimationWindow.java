@@ -53,8 +53,8 @@ public class AnimationWindow extends javax.swing.JFrame {
         try {
             sii = new SimpleImageInfo(img);
         } catch(Exception e) {
-            System.out.println("error recieving image scale info");
-            e.printStackTrace();
+            System.out.print("");
+//            e.printStackTrace();
         }
         
         double scale;
@@ -85,7 +85,7 @@ public class AnimationWindow extends javax.swing.JFrame {
             currentImg = img;
             return new ImageIcon(ImageIO.read(img).getScaledInstance((int) (sii.getWidth() * scale), (int) (sii.getHeight() * scale), BufferedImage.SCALE_SMOOTH)); 
         } catch(Exception e) {
-            System.out.println("error creating Image Icon");
+            System.out.print("*");
 //            e.printStackTrace();
             return null;
         }
@@ -108,14 +108,22 @@ public class AnimationWindow extends javax.swing.JFrame {
     }
     
     private void animationLoad() {
+        System.out.print("\nAnimation Load\n");
         animList.clear();
+        int i = 0;
         for (File file : fileList) {
             try {
                 animList.add(smartImageScaler(file));
-                System.out.print("-");
+                if (i % 5 == 0) {
+                    System.out.print(i);
+                } else {
+                    System.out.print("-");
+                }
             } catch(Exception e) { 
 //                e.printStackTrace();
-                System.out.print("*");}
+                System.out.print("*");
+            }
+            i++;
         }
         System.out.println("");
     }
