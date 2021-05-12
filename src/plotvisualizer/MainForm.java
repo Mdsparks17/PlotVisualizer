@@ -91,10 +91,17 @@ public class MainForm extends javax.swing.JFrame {
     private void openFile() {
         //opens file using native desktop application
         try {
-            System.out.println("Opening File: " + selectedFileList.get(mainList.getSelectedIndex()).getPath());
-            System.out.println(selectedFileList.get(mainList.getSelectedIndex()));
-            Desktop desktop = Desktop.getDesktop();  
-            desktop.open(selectedFileList.get(mainList.getSelectedIndex()));
+            
+            try {
+                Process p = Runtime.getRuntime().exec("eog " + selectedFileList.get(mainList.getSelectedIndex()));
+                System.out.println("Opening eog");
+            } catch(Exception e) {
+                System.out.println("Opening File: " + selectedFileList.get(mainList.getSelectedIndex()).getPath());
+                System.out.println(selectedFileList.get(mainList.getSelectedIndex()));
+                Desktop desktop = Desktop.getDesktop();  
+                desktop.open(selectedFileList.get(mainList.getSelectedIndex()));
+                System.out.println("Opening defaul desktop app");
+            }
         } catch(Exception e) {
             System.out.println("File Not Found!");
         }
